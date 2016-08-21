@@ -22,4 +22,4 @@ Route::get('/home', 'HomeController@index');
 // DIeu huong xu ly
 Route::get('/tasks', 'TaskController@index');
 Route::post('/tasks', 'TaskController@store');
-Route::delete('/tasks/{task}', 'TaskController@destroy');
+Route::delete('/tasks/{id}', 'TaskController@destroy');

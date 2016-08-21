@@ -4,15 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Task;
+use Gate;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Repositories\TaskRepository;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
     //
 
     protected $tasks;
+
     function __construct(TaskRepository $tasks)
     {
         $this->middleware('auth');
@@ -24,7 +27,7 @@ class TaskController extends Controller
 //        $task = $request->user()->tasks()->get();
         return view('tasks.index', array(
             'tasks' => $this->tasks->forUser($request->user())
-    ));
+        ));
 
 
     }
@@ -40,8 +43,20 @@ class TaskController extends Controller
         ));
         return redirect('/tasks');
     }
-    public function destroy(Request $request,Task $task){
-        $this->authorize('destroy',$task);
+
+    public function destroy(Request $request, $id)
+    {
+//        dd($request->user());
+        $task = Task::findOrFail($id);
+
+//        dd($task->user_id);
+//        dd($request->user()->id);
+
+        dd(Auth::user());
+
+        if (Gate::denies('delete-task', $task)) {
+            abort(403);
+        }
 
         $task->delete();
 

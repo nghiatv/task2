@@ -14,7 +14,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         'App\Model' => 'App\Policies\ModelPolicy',
-        'App\Task' => 'App\Policies\TaskPolicy'
+//        'App\Task' => 'App\Policies\TaskPolicy'
     ];
 
     /**
@@ -30,8 +30,9 @@ class AuthServiceProvider extends ServiceProvider
         // thu dinh nghia 1 cai gate xem sao
 
 
-        $gate->define('delete-task', function($user, $task){
-           return $user->id === $task->user_id;
+        $gate->define('delete-task', function ($user, $task) {
+            return $user->id === $task->user_id;
         });
+
     }
 }
